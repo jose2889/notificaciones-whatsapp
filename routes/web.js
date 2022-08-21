@@ -1,7 +1,12 @@
 const express = require('express');
 const router = express.Router()
-const { getQr } = require('../controllers/web')
+const { getQr, home, sendMessagePost } = require('../controllers/web')
 
-router.use('/qr', getQr)
+
+router.get('/', home)
+
+router.get('/qr', getQr)
+
+router.post('/enviar', sendMessagePost)
 
 module.exports = router

@@ -145,7 +145,7 @@ client.on('ready', (a) => {
 });
 
 client.on('auth_failure', (e) => {
-        // console.log(e)
+         console.log("Fallo la conexion para iniciar sesion en whatsapp",e)
         // connectionLost()
 });
 
@@ -168,5 +168,39 @@ if (process.env.DATABASE === 'mysql') {
 server.listen(port, () => {
     console.log(`El server esta listo por el puerto ${port}`);
 })
+
+app.post('/notificationws', (req, res) => {
+    
+    let { message, number } = req.body
+    number = cleanNumber(number);
+    console.log("Enviando al numero ", number)
+    let msj = 
+        `Estimado *${message}* le notificamos que se ha agendado su reserva con exito 🙂🤖\n Para su comodidad se ha enviado una notificación a su correo donde podra gestionar su reserva \n`;
+    
+    client.sendMessage(number, message);
+
+    res.send({ status: 'Ok' })
+}
+)
+
+app.post('/confirmationws', (req, res) => {
+    
+    let { message, number, tokenConfirm, tokenCancel } = req.body
+
+    number = cleanNumber(number)
+
+    console.log("request ", req.body)
+
+    let msj =
+        `Estimado *${message}* le recordamos que el dia 12-12-2022 a las 13:45 tiene reservado una cita en Roslin \n Marque *1* para confirmar su reserva\n Marque *2* para canceular su reserva\n`;
+    
+
+    client.sendMessage(number, message);
+    readChat(message, number, tokenConfirm, tokenCancel)
+  
+    res.send({ status: 'Ok' })
+}
+)
+
 checkEnvFile();
 

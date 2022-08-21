@@ -2,7 +2,7 @@ const fs = require('fs')
 const { sendMessage } = require('../controllers/send')
 
 const sendMessagePost = (req, res) => {
-    console.log('asdasdasdasdasd')
+    console.log('asdasdasdasdasd', req.body)
     const { message, number } = req.body
     const client = req.clientWs || null;
     sendMessage(client, number, message)
@@ -14,4 +14,7 @@ const getQr = (req, res) => {
     fs.createReadStream(`${__dirname}/../mediaSend/qr-code.svg`).pipe(res);
 }
 
-module.exports = { sendMessagePost, getQr }
+const home = (req, res) => {
+    res.send("Bienvenido - Servidor en linea!!!")
+}
+module.exports = { sendMessagePost, getQr, home }
